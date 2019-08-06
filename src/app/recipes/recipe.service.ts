@@ -33,6 +33,10 @@ export class RecepieService {
     return copyRecepies;
   }
 
+  getRecipe(id: number): Recipe {
+    return this.recipes[id - 1];
+  }
+
   addIngredientsToShoppingList(ingreients: Ingredient[]) {
     // ingreients.forEach(ingredient => this.shopListService.addIngredient(ingredient));
 
