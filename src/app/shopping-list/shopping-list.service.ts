@@ -1,8 +1,10 @@
 import { Ingredient } from '../shared/ingredient.model';
-import { EventEmitter } from '@angular/core';
+import { Subject } from 'rxjs';
 
 export class ShoppingListService {
-  ingredientsChanged = new EventEmitter<Ingredient[]>();
+  ingredientsChanged = new Subject<Ingredient[]>();
+
+  ingredientEditing = new Subject<number>();
 
   private ingredients: Ingredient[] = [
     new Ingredient('Apples', 5),
@@ -13,30 +15,29 @@ export class ShoppingListService {
     return [...this.ingredients];
   }
 
+  getIngredient(index: number): Ingredient {
+    return this.ingredients[index];
+  }
+
   addIngredient(ingredient: Ingredient) {
-    this.ingredients = [...this.ingredients, ingredient];
-
-    // To display back that array of ingredietns changed we emit event with updated array
-    this.ingredientsChanged.emit([...this.ingredients]);
+    const idxItem = this.ingredients.findIndex(
+      ing => ing.name == ingredient.name
+    );
+    if (idxItem > -1) {
+      this.ingredients.splice(idxItem, 1, ingredient);
+    } else {
+      this.ingredients = [...this.ingredients, ingredient];
+    }
+    this.ingredientsChanged.next([...this.ingredients]);
   }
 
-  ingredientIndex(ingredients: Ingredient[], ingr: Ingredient) {
-    return ingredients.findIndex(ingredient => ingredient.name === ingr.name);
+  updateIngredient(index: number, newIngredient: Ingredient) {
+    this.ingredients.splice(index, 1, newIngredient);
+    this.ingredientsChanged.next([...this.ingredients]);
   }
 
-  addIngredients(ingredients: Ingredient[]) {
-    const copyStateIngredients = [...this.ingredients];
-
-    ingredients.forEach(ingred => {
-      const ingIdx = this.ingredientIndex(copyStateIngredients, ingred);
-
-      ingIdx >= 0
-        ? (copyStateIngredients[ingIdx].amount += ingred.amount)
-        : copyStateIngredients.push(ingred);
-    });
-
-    this.ingredients = copyStateIngredients;
-
-    this.ingredientsChanged.emit([...this.ingredients]);
+  deleteIngredient(index: number) {
+    this.ingredients.splice(index, 1);
+    this.ingredientsChanged.next([...this.ingredients]);
   }
 }
