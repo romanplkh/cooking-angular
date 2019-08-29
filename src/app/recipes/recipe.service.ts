@@ -1,11 +1,10 @@
 import { Recipe } from './recipe.model';
-import {  Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
 @Injectable()
 export class RecepieService {
-
   private recipes: Recipe[] = [
     new Recipe(
       'Test name',
@@ -38,7 +37,6 @@ export class RecepieService {
 
   addIngredientsToShoppingList(ingreients: Ingredient[]) {
     // ingreients.forEach(ingredient => this.shopListService.addIngredient(ingredient));
-
     this.shopListService.addIngredients(ingreients);
   }
 }
