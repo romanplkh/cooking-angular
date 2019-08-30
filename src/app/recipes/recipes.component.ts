@@ -6,7 +6,7 @@ import { RecepieService } from './recipe.service';
   selector: 'app-recipes',
   templateUrl: './recipes.component.html',
   styleUrls: ['./recipes.component.css'],
-  providers: [RecepieService]
+  providers: []
 })
 export class RecipesComponent implements OnInit {
   selectedRecipe: Recipe;
