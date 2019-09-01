@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { DatabaseService } from '../shared/database.service';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +7,13 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
   styleUrls: []
 })
 export class HeaderComponent implements OnInit {
-  constructor() {}
+  constructor(private db: DatabaseService) { }
 
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
 
+ async onSaveData() {
+    await this.db.saveRecepies().then(resp => console.log(resp))
+  }
 }

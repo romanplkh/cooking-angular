@@ -20,20 +20,17 @@ export class ShoppingListService {
   }
 
   addIngredient(ingredient: Ingredient) {
-    const idxItem = this.ingredients.findIndex(
-      ing => ing.name == ingredient.name
-    );
+    const idxItem = this.ingredients.findIndex(ing => ing.name == ingredient.name);
     if (idxItem > -1) {
-      this.ingredients.splice(idxItem, 1, ingredient);
+      this.ingredients[idxItem].amount += ingredient.amount;
     } else {
-      this.ingredients = [...this.ingredients, ingredient];
+      this.ingredients.push(new Ingredient(ingredient.name, ingredient.amount))
     }
-    this.ingredientsChanged.next([...this.ingredients]);
   }
 
+
   addIngredients(ingredients: Ingredient[]) {
-    console.log(ingredients)
-    this.ingredients.push(...ingredients);
+    ingredients.forEach(this.addIngredient.bind(this));
     this.ingredientsChanged.next([...this.ingredients]);
   }
 
