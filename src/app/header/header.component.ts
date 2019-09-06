@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void { }
 
 
- async onSaveData() {
-    await this.db.saveRecepies().then(resp => console.log(resp))
+  onSaveData() {
+
   }
 }
