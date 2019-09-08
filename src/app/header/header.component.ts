@@ -19,4 +19,8 @@ export class HeaderComponent implements OnInit {
       error: err => console.log(err)
     });
   }
+
+  onFetchData() {
+    this.db.getRecepies();
+  }
 }
