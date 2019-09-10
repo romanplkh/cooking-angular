@@ -1,15 +1,18 @@
 import { Component, OnInit, EventEmitter, Output } from "@angular/core";
 import { DatabaseService } from "../shared/database.service";
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
   styleUrls: []
 })
-export class HeaderComponent implements OnInit {
-  constructor(private db: DatabaseService) { }
+export class HeaderComponent {
 
-  ngOnInit(): void { }
+
+  constructor(private db: DatabaseService, private auth: AuthService) { }
+
+
 
   onSaveData() {
     this.db.saveRecipes().subscribe({
@@ -22,5 +25,9 @@ export class HeaderComponent implements OnInit {
 
   onFetchData() {
     this.db.getRecepies();
+  }
+
+  onLogout() {
+    this.auth.logOut();
   }
 }

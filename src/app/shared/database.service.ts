@@ -3,7 +3,9 @@ import { HttpClient } from "@angular/common/http";
 import { RecepieService } from "../recipes/recipe.service";
 import { Recipe } from '../recipes/recipe.model';
 import { map } from 'rxjs/operators';
-import { Response } from 'selenium-webdriver/http';
+
+import { AuthService } from '../auth/auth.service';
+
 
 @Injectable({
   providedIn: "root"
@@ -11,19 +13,33 @@ import { Response } from 'selenium-webdriver/http';
 export class DatabaseService {
   constructor(
     private http: HttpClient,
-    private recipeService: RecepieService
+    private recipeService: RecepieService,
+    private auth: AuthService
   ) { }
 
   saveRecipes() {
+
+    const token = this.auth.getToken();
+
     //returns observable
     return this.http.put(
-      "https://cooking-ang.firebaseio.com/recipes.json",
+      `https://cooking-ang.firebaseio.com/recipes.json?auth=${token}`,
       this.recipeService.getRecipes()
     );
+
+
   }
 
   getRecepies() {
-    this.http.get("https://cooking-ang.firebaseio.com/recipes.json").pipe(map(data => {
+
+    this.auth.getToken();
+
+    const token = this.auth.token;
+
+    //*TODO: HANDLE WHEN token == null
+
+
+    this.http.get(`https://cooking-ang.firebaseio.com/recipes.json?auth=${token}`).pipe(map(data => {
 
       //returns array of recipes;
       const recipes: Recipe[] = <Recipe[]>data;
@@ -39,5 +55,8 @@ export class DatabaseService {
     })).subscribe({
       next: recepies => this.recipeService.setRecepies((<Recipe[]>recepies))
     })
+
   }
+
+
 }

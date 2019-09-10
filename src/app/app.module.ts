@@ -22,6 +22,7 @@ import { RecepieService } from './recipes/recipe.service';
 import { DatabaseService } from './shared/database.service';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
+import { AuthService } from './auth/auth.service';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import { SigninComponent } from './auth/signin/signin.component';
     SigninComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule, HttpClientModule],
-  providers: [ShoppingListService, RecepieService, DatabaseService],
+  providers: [ShoppingListService, RecepieService, DatabaseService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
