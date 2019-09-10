@@ -1,8 +1,15 @@
 import * as firebase from 'firebase';
+import { Router } from '@angular/router';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class AuthService {
 
   token: string;
+
+  constructor(private myRouter: Router) {
+
+  }
 
   async signupUser(email: string, password: string) {
     try {
@@ -15,15 +22,13 @@ export class AuthService {
   }
 
 
-  async signinUser(email: string, password: string) {
-    try {
-      await firebase.auth().signInWithEmailAndPassword(email, password);
-      const tokenBack = await firebase.auth().currentUser.getIdToken();
-      this.token = tokenBack;
+  signinUser(email: string, password: string) {
 
-    } catch (error) {
-      console.log(error)
-    }
+    firebase.auth().signInWithEmailAndPassword(email, password).then(creds => {
+      this.myRouter.navigate(['/'])
+      firebase.auth().currentUser.getIdToken().then(token => this.token = token)
+    });
+
   }
 
   getToken() {
